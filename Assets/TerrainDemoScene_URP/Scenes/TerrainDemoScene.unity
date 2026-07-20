@@ -9539,6 +9539,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bookmarks
       objectReference: {fileID: 0}
+    - target: {fileID: 8727866894635817107, guid: 8067cb133919b42a3b9dac88315a0c4e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
