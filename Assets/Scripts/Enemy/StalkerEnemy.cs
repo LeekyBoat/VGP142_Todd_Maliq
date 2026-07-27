@@ -35,6 +35,8 @@ public class StalkerEnemy : MonoBehaviour
     public float shootingRange = 15f;
     [Tooltip("Layers that block a clear shot to the player (usually same as visibilityBlockLayers).")]
     public LayerMask shotBlockLayers;
+    [Tooltip("Vertical offset added to the player's position when aiming, so shots target chest/head height instead of their feet.")]
+    public float aimHeightOffset = 1.2f;
 
     private NavMeshAgent agent;
     private bool isPlayerLooking;
@@ -155,7 +157,8 @@ public class StalkerEnemy : MonoBehaviour
     {
         if (firePoint == null) return false;
 
-        Vector3 toPlayer = playerTransform.position - firePoint.position;
+        Vector3 aimPoint = playerTransform.position + Vector3.up * aimHeightOffset;
+        Vector3 toPlayer = aimPoint - firePoint.position;
         float distance = toPlayer.magnitude;
 
         // If something (a wall, prop) blocks the straight line to the player, don't fire.
@@ -171,7 +174,8 @@ public class StalkerEnemy : MonoBehaviour
     {
         if (projectilePrefab == null || firePoint == null) return;
 
-        Vector3 direction = (playerTransform.position - firePoint.position).normalized;
+        Vector3 aimPoint = playerTransform.position + Vector3.up * aimHeightOffset;
+        Vector3 direction = (aimPoint - firePoint.position).normalized;
         GameObject projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.LookRotation(direction));
 
         Rigidbody rb = projectile.GetComponent<Rigidbody>();
