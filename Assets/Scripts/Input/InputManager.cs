@@ -40,7 +40,6 @@ public class InputManager : SingletonUtil<InputManager>, InputSystem_Actions.IPl
 
     public void OnLook(InputAction.CallbackContext context)
     {
-        OnLookEvent?.Invoke(context.ReadValue<Vector2>());
         //throw new System.NotImplementedException();
     }
 

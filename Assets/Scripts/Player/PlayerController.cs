@@ -53,24 +53,53 @@ public class PlayerController : MonoBehaviour
     }
     void FixedUpdate()
     {
+        // Find the projected move direction based on the camera orientation
+
         UpdateCharacterVelocity();
         cc.Move(velocity * Time.fixedDeltaTime);
 
-}
-
-
-    private void RotateTowardsMouse()
-    {
-        Vector3 camForward = cam.transform.forward;
-        camForward.y = 0f;
-
-        if (camForward.sqrMagnitude > 0.001f)
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(camForward.normalized);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-        }
     }
 
+    //private Vector3 ProjectedMoveDirection()
+    //{
+    //    Vector3 forward = cam.transform.forward;
+    //    forward.y = 0f;
+    //    forward.Normalize();
+
+    //    Vector3 right = cam.transform.right;
+    //    right.y = 0f;
+    //    right.Normalize();
+
+    //    return forward * moveInput.y + right * moveInput.x;
+    //}
+
+    //private void UpdateCharacterVelocity(Vector3 ProjectedMoveDirection)
+    //{
+    //    velocity.x = ProjectedMoveDirection.x * speed;
+    //    velocity.z = ProjectedMoveDirection.z * speed;
+
+    //    if (cc.isGrounded)
+    //    {
+    //        velocity.y = cc.skinWidth;
+    //        if (jumpPressed)
+    //        {
+    //            velocity.y = initalJumpVelocity;
+    //        }
+    //    }
+    //    else
+    //    {
+    //        velocity.y += gravity * Time.fixedDeltaTime;
+    //    }
+    //}
+
+    //private void UpdateCharacterRotation(Vector3 ProjectedMoveDirection)
+    //{
+    //    if (forward.sqrMagnitude > 0.001f)
+    //    {
+    //        Quaternion targetRotation = Quaternion.LookRotation(forward.normalized);
+    //        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+    //    }
+    //}
     private void UpdateCharacterVelocity()
     {
         Vector3 camForward = cam.transform.forward;
@@ -99,6 +128,24 @@ public class PlayerController : MonoBehaviour
             velocity.y += gravity * Time.fixedDeltaTime;
         }
     }
+
+    private void RotateTowardsMouse()
+    {
+        Vector3 camForward = cam.transform.forward;
+        camForward.y = 0f;
+        //camForward.Normalize();
+
+        //Vector3 right = cam.transform.right;
+        //right.y = 0f;
+        //right.Normalize();
+
+        if (camForward.sqrMagnitude > 0.001f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(camForward.normalized);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        }
+    }
+
     private void OnDrawGizmosSelected()
     {
         Debug.DrawRay(transform.position, transform.forward * 2f, Color.blue);
@@ -110,6 +157,10 @@ public class PlayerController : MonoBehaviour
         if (other.CompareTag("Win"))
         {
             SceneManager.LoadScene("GameEnd");
+        }
+        if (other.CompareTag("Projectile"))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 }

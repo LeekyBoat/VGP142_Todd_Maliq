@@ -7,6 +7,9 @@ TagManager:
   - Enemy
   - Pickup
   - Win
+  - Box
+  - Sphere
+  - Projectile
   layers:
   - Default
   - TransparentFX
