@@ -5,37 +5,25 @@ using UnityEngine.AI;
 public class StalkerEnemy : MonoBehaviour
 {
     [Header("Setup References")]
-    [Tooltip("Assign your main player transform here.")]
     public Transform playerTransform;
-    [Tooltip("The main camera the player looks through.")]
     public Camera playerCamera;
 
     [Header("Stalker Settings")]
-    [Tooltip("How close the stalker gets before stopping to watch.")]
     public float stalkingDistance = 5f;
-    [Tooltip("Speed when the player is not looking.")]
     public float stalkSpeed = 3.5f;
-    [Tooltip("Speed when creeping up if player looks away for too long.")]
-    public float dashSpeed = 7f;
+    //public float dashSpeed = 7f;
 
     [Header("Detection Settings")]
-    [Tooltip("Layers that block the player's view to the stalker (e.g., Default, Environment).")]
     public LayerMask visibilityBlockLayers;
 
     [Header("Shooting Settings")]
-    [Tooltip("The projectile prefab to fire at the player. Must have a Rigidbody.")]
     public GameObject projectilePrefab;
-    [Tooltip("Empty child transform marking where projectiles spawn from (e.g. a 'gun barrel' point).")]
     public Transform firePoint;
-    [Tooltip("Seconds between each shot while the player is looking at the stalker.")]
     public float fireRate = 1.5f;
-    [Tooltip("Speed the projectile travels at.")]
     public float projectileSpeed = 20f;
-    [Tooltip("Max range the stalker will bother shooting from. Set higher than stalkingDistance if you want ranged shots.")]
     public float shootingRange = 15f;
-    [Tooltip("Layers that block a clear shot to the player (usually same as visibilityBlockLayers).")]
     public LayerMask shotBlockLayers;
-    [Tooltip("Vertical offset added to the player's position when aiming, so shots target chest/head height instead of their feet.")]
+    //[Tooltip("Vertical offset added to the player's position when aiming, so shots target chest/head height instead of their feet.")]
     public float aimHeightOffset = 1.2f;
 
     private NavMeshAgent agent;
@@ -64,13 +52,10 @@ public class StalkerEnemy : MonoBehaviour
     {
         if (playerTransform == null || playerCamera == null) return;
 
-        // 1. Check if the stalker is within the player's screen view and line of sight
         isPlayerLooking = CheckIfPlayerLooking();
 
-        // 2. Control behavior based on player visibility status
         HandleStalkingBehavior();
 
-        // 3. Handle shooting cooldown + firing while seen
         HandleShooting();
     }
 
@@ -90,11 +75,10 @@ public class StalkerEnemy : MonoBehaviour
 
             if (Physics.Raycast(playerCamera.transform.position, directionToStalker, out RaycastHit hit, distanceToStalker, visibilityBlockLayers))
             {
-                // If the ray hits an environment obstacle first, the player cannot actually see the stalker
                 return false;
             }
 
-            return true; // Player is directly looking at the stalker
+            return true;
         }
 
         return false;
@@ -124,12 +108,12 @@ public class StalkerEnemy : MonoBehaviour
                 agent.speed = stalkSpeed;
                 agent.SetDestination(playerTransform.position);
             }
-            else
-            {
-                // Aggressive behavior: close range rush if they continue to look away
-                agent.speed = dashSpeed;
-                agent.SetDestination(playerTransform.position);
-            }
+            //else
+            //{
+            //    // Aggressive behavior: close range rush if they continue to look away
+            //    agent.speed = dashSpeed;
+            //    agent.SetDestination(playerTransform.position);
+            //}
         }
     }
 
